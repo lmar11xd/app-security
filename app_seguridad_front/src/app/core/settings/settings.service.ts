@@ -27,12 +27,12 @@ export class SettingsService {
     this.API_URL_SEGURIDAD = (function () {
       return {
         // Sesion
-        'api_sesionCloudController_login': 'api/sesionCloudController/loginAplicacion',
-        'api_sesionCloudController_obtenerSesion': 'api/sesionCloudController/obtenerSesion',
-        'api_sesionCloudController_invalidate': 'api/sesionCloudController/invalidate',
-        'api_sesionWebController_obtenerSesion': 'api/sesionController/obtenerSesion',
-        'api_sesionWebController_obtenerMenu': 'api/sesionController/obtenerMenu',
-        'api_sesionCloudController_token': 'api/sesionCloudController/token'
+        'api_sesionCloud_login': 'api/auth/login',
+        'api_sesionCloud_obtenerSesion': 'api/sesionCloud/obtenerSesion',
+        'api_sesionCloud_invalidate': 'api/sesionCloud/invalidate',
+        'api_sesionWeb_obtenerSesion': 'api/sesion/obtenerSesion',
+        'api_sesionWeb_obtenerMenu': 'api/sesion/obtenerMenu',
+        'api_sesionCloud_token': 'api/sesionCloud/token'
       }
     })();
 

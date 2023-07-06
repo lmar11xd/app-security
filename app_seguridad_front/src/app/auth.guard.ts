@@ -17,10 +17,10 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     private menuService: SidebarService) { }
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    console.log("AuthGuard");
     this.settings.setUrlSessionOn("");
     let sesionSSO = this.authServiceLocal.obtenerSesionActual();
     if(Utils.isEmpty(sesionSSO)) {
+      console.log("No hay sesión");
       this.settings.setUrlSessionOn(state.url);
       this.settings.mostrarSpinner();
       Promise.all([
@@ -34,18 +34,20 @@ export class AuthGuard implements CanActivate, CanActivateChild {
           this.menuService.setMenuItems(response.objPv_sesion.objPv_listaMenu);
           this.authServiceLocal.grabarSesion(sesionSSO,true);
           if(this.settings.getUrlSessionOn().indexOf("home") > 0){
-            this.router.navigate([""]);
-          }else{
+            this.router.navigate(["/"]);
+          } else {
             this.router.navigate([this.settings.getUrlSessionOn()]);
           }
           return true;
         },
         err => {
           this.settings.ocultarSpinner();
+          this.router.navigate(["login"]);
           return false;
         }
       );
     } else {
+      console.log("Sesión encontrada");
       this.authServiceLocal.grabarSesion(sesionSSO,false);
       this.menuService.setMenuItems(sesionSSO.objPv_listaMenu);
       return true;

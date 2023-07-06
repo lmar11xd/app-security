@@ -10,7 +10,7 @@ export class SessionLocalService {
 
   constructor(
     private settings: SettingsService,
-    private sesionDbService: SessionDbService,
+    private sessionDbService: SessionDbService,
     private menuService: SidebarService) {}
 
   setToken(token) {
@@ -40,8 +40,8 @@ export class SessionLocalService {
   grabarSesion(objA_session, isMovil : Boolean) {
     this.session = Object.assign({},objA_session);
     if(isMovil){
-      this.sesionDbService.delete();
-      this.sesionDbService.save(objA_session);
+      this.sessionDbService.delete();
+      this.sessionDbService.save(objA_session);
     } else {
       this.settings.setSession(this.session);
     }
@@ -52,13 +52,13 @@ export class SessionLocalService {
   }
 
   borrarSesion() {
-    this.sesionDbService.delete();
+    this.sessionDbService.delete();
     this.session = {};
   }
 
   obtenerSesionActual() {
     let session = null;
-    session = this.sesionDbService.get();
+    session = this.sessionDbService.get();
     if(session == null) {
       this.session = {};
     } else {

@@ -3,6 +3,7 @@
   "version": "1.5.0",
   "scripts": {
     "ng": "ng",
+    "dev": "ng serve --port 5010",
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
