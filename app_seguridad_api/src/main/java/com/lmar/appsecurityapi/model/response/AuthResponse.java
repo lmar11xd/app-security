@@ -1,6 +1,9 @@
 package com.lmar.appsecurityapi.model.response;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.lmar.appsecurityapi.model.Menu;
 import com.lmar.appsecurityapi.model.UserInfo;
 
 import lombok.AllArgsConstructor;
@@ -17,4 +20,6 @@ public class AuthResponse {
 	
 	@JsonIgnoreProperties({"password" })
 	private UserInfo user;
+	
+	private List<Menu> menuOptions;
 }

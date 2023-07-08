@@ -1,5 +1,7 @@
 package com.lmar.appsecurityapi.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,11 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lmar.appsecurityapi.exception.UserException;
 import com.lmar.appsecurityapi.helpers.JwtUtil;
+import com.lmar.appsecurityapi.model.Menu;
 import com.lmar.appsecurityapi.model.UserInfo;
 import com.lmar.appsecurityapi.model.request.AuthRequest;
 import com.lmar.appsecurityapi.model.request.RegisterUserRequest;
 import com.lmar.appsecurityapi.model.response.AuthResponse;
 import com.lmar.appsecurityapi.service.CustomUserDetailService;
+import com.lmar.appsecurityapi.service.MenuService;
 import com.lmar.appsecurityapi.service.UserService;
 
 @RestController
@@ -35,6 +39,9 @@ public class AuthController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private MenuService menuService;
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -53,7 +60,7 @@ public class AuthController {
 		AuthResponse response = new AuthResponse();
 		UserInfo user = userService.registerSimple(request);
 		if(user != null) {
-			response = authenticate(new AuthRequest(request.getEmail(), request.getPassword()));
+			response = authenticate(new AuthRequest(request.getAppCode(), request.getEmail(), request.getPassword()));
 		} else {
 			throw new UserException("No se pudo registrar al usuario");
 		}
@@ -78,12 +85,14 @@ public class AuthController {
 		
 		String token = this.jwtUtil.generateToken(userDetails);
 		UserInfo user = userService.findByUsernameEmail(request.getUsername());
+		List<Menu> listaMenu = menuService.getMenuByAppCode(request.getAppCode());
 		
 		AuthResponse response = new AuthResponse();
 		response.setStatus(200);
 		response.setMessage("Usuario autenticado");
 		response.setToken(token);
 		response.setUser(user);
+		response.setMenuOptions(listaMenu);
 		return response;
 	}
 }
