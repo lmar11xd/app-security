@@ -4,7 +4,7 @@ import { SessionLocalService } from "./core/security/session-local.service";
 import { SessionWebService } from "./core/security/session-web.service";
 import { SettingsService } from "./core/settings/settings.service";
 import { SidebarService } from "./components/sidebar/sidebar.service";
-import { Utils } from "./utils/utils";
+import { Utils } from "./helpers/utils";
 
 @Injectable({
   providedIn: 'root'
@@ -18,9 +18,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     this.settings.setUrlSessionOn("");
-    let sesionSSO = this.authServiceLocal.obtenerSesionActual();
-    if(Utils.isEmpty(sesionSSO)) {
-      console.log("No hay sesión");
+    let session = this.authServiceLocal.obtenerSesionActual();
+    if(Utils.isEmpty(session)) {
       this.settings.setUrlSessionOn(state.url);
       this.settings.mostrarSpinner();
       Promise.all([
@@ -30,10 +29,10 @@ export class AuthGuard implements CanActivate, CanActivateChild {
           var response: any;
           response = data[0];
           this.settings.ocultarSpinner();
-          let sesionSSO = Object.assign({}, response.objPv_sesion);
-          this.menuService.setMenuItems(response.objPv_sesion.objPv_listaMenu);
+          let sesionSSO = Object.assign({}, response.session);
+          this.menuService.setMenuItems(response.session.menuOptions);
           this.authServiceLocal.grabarSesion(sesionSSO,true);
-          if(this.settings.getUrlSessionOn().indexOf("home") > 0){
+          if(this.settings.getUrlSessionOn().indexOf("dashboard") > 0){
             this.router.navigate(["/"]);
           } else {
             this.router.navigate([this.settings.getUrlSessionOn()]);
@@ -42,14 +41,13 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         },
         err => {
           this.settings.ocultarSpinner();
-          this.router.navigate(["login"]);
+          this.router.navigate(["/login"]);
           return false;
         }
       );
     } else {
-      console.log("Sesión encontrada");
-      this.authServiceLocal.grabarSesion(sesionSSO,false);
-      this.menuService.setMenuItems(sesionSSO.objPv_listaMenu);
+      this.authServiceLocal.grabarSesion(session, false);
+      this.menuService.setMenuItems(session.menuOptions);
       return true;
     }
   }

@@ -5,6 +5,7 @@ import { SessionLocalService } from "../security/session-local.service";
 import { SettingsService } from "../settings/settings.service";
 import { Router } from "@angular/router";
 import { MessageService } from 'primeng/api';
+import { Constantes } from "src/app/helpers/constantes";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -34,7 +35,7 @@ export class AuthInterceptor implements HttpInterceptor {
             summary: "Error en el Servidor",
             detail: `No tienes acceso a este recurso!`
             });
-          this.router.navigate(['/inicio']);
+          this.router.navigate([Constantes.P_PAGE_INIT]);
         }
         return throwError(() => e);
       })

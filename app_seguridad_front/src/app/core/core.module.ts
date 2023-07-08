@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { MessageService } from 'primeng/api';
 import { WindowRef } from './db/WindowRef';
 import { DbService } from './db/db.service';
-import { AuthGuardService } from './security/auth-guard.service';
 import { SessionCloudService } from './security/session-cloud.service';
 import { SessionLocalService } from './security/session-local.service';
 import { SessionWebService } from './security/session-web.service';
@@ -24,7 +23,6 @@ import { throwIfAlreadyLoaded } from './import.guard';
     DbService,
     SessionDbService,
     WindowRef,
-    AuthGuardService,
     MessageService
   ]
 })

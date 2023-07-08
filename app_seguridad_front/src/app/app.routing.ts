@@ -5,9 +5,9 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
-import { LoginComponent } from './pages/login/login.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { AuthGuard } from './auth.guard';
+import { LoginComponent } from './pages/login/login.component';
 
 const routes: Routes =[
   {
@@ -34,7 +34,15 @@ const routes: Routes =[
         path: '',
         loadChildren: () => import('src/app/layouts/auth-layout/auth-layout.module').then(m => m.AuthLayoutModule)
       }
-    ]
+    ],
+  },
+  {
+    path: '**',
+    redirectTo: '/login'
+  },
+  {
+    path: 'login',
+    component: LoginComponent
   },
   {
     path: '**',
@@ -42,7 +50,8 @@ const routes: Routes =[
   },
   {
     path: '404',
-    component: NotFoundComponent
+    component: NotFoundComponent,
+    pathMatch: 'full'
   }
 ];
 

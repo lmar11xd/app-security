@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { SidebarService } from "src/app/components/sidebar/sidebar.service";
 import { SettingsService } from "../settings/settings.service";
 import { SessionDbService } from "../db/session-db.service";
-import { Utils } from "src/app/utils/utils";
+import { Utils } from "src/app/helpers/utils";
 
 @Injectable()
 export class SessionLocalService {
@@ -29,26 +29,26 @@ export class SessionLocalService {
     return this.session.expires_in;
   }
 
-  setObjPv_listaMenu(listaMenu) {
-    this.session.objPv_listaMenu = listaMenu;
+  setMenuOptions(listaMenu) {
+    this.session.menuOptions = listaMenu;
   }
 
-  getObjPv_listaMenu() {
-    return this.session.objPv_listaMenu;
+  getMenuOptions() {
+    return this.session.menuOptions;
   }
 
-  grabarSesion(objA_session, isMovil : Boolean) {
-    this.session = Object.assign({},objA_session);
+  grabarSesion(session, isMovil: Boolean) {
+    this.session = Object.assign({}, session);
     if(isMovil){
       this.sessionDbService.delete();
-      this.sessionDbService.save(objA_session);
+      this.sessionDbService.save(session);
     } else {
       this.settings.setSession(this.session);
     }
   }
 
-  actualizarSesion(objA_session) {
-    this.session = Object.assign({}, objA_session);
+  actualizarSesion(session) {
+    this.session = Object.assign({}, session);
   }
 
   borrarSesion() {
@@ -68,43 +68,46 @@ export class SessionLocalService {
   }
 
   tieneToken() {
-    let blnL_flagTieneToken = false;
+    let hasToken = false;
     this.session = this.obtenerSesionActual();
     if(this.session !== null && this.session.token !== null && typeof this.session.token !== 'undefined' && this.session.token !== '') {
       this.settings.setSession(this.session);
-      this.menuService.setMenuItems(this.session.objPv_listaMenu);
+      this.menuService.setMenuItems(this.session.menuOptions);
       let ahora = new Date();
       let ahoraMiliseg = ahora.getTime();
       let diaSesion = new Date(this.session.expires_in);
-      let diaSesionFin = new Date(diaSesion.getFullYear(),diaSesion.getMonth(),diaSesion.getDate(),23,59,59,0);
+      let diaSesionFin = new Date(diaSesion.getFullYear(), diaSesion.getMonth(), diaSesion.getDate(), 23, 59, 59, 0);
       if(diaSesionFin.getTime() > ahoraMiliseg){
-        blnL_flagTieneToken = true;
+        hasToken = true;
       } else {
         this.borrarSesion();
       }
     }
-    return blnL_flagTieneToken;
+    return hasToken;
   }
 
   tieneSesionWeb() {
-    let blnL_flagTienSesion = false;
+    let hasSession = false;
     this.session = this.obtenerSesionActual();
     if (!Utils.isEmpty(this.session)) {
-      blnL_flagTienSesion = true;
+      hasSession = true;
     }
-    return blnL_flagTienSesion;
+    return hasSession;
   }
 
   obtenerDatosToken(accessToken: string): any {
     if (accessToken != null) {
-      return JSON.parse(atob(accessToken.split(".")[1]));
+      const arrayToken = accessToken.split(".");
+      const dataToken = window.atob(arrayToken[1]);
+      return JSON.parse(dataToken);
     }
     return null;
   }
 
   isAuthenticated(): boolean {
-    let payload = this.obtenerDatosToken(this.getToken());
-    if (payload != null && payload.username && payload.username.length > 0) {
+    const token = this.getToken();
+    let payload = this.obtenerDatosToken(token);
+    if (payload != null && payload.sub && payload.sub.length > 0) {
       return true;
     }
     return false;

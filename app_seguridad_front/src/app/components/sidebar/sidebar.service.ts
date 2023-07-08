@@ -17,30 +17,13 @@ export class SidebarService {
   }
 
   setMenuItems(menuItems: any[]) {
-    for(let i=0; i < menuItems.length; i++) {
-      let item = menuItems[i];
+    if(menuItems == null) return;
+    menuItems.forEach((item) => {
+      item.title = item.title;
+      item.icon = item.icon;
+      item.path = item.path;
       item.class = '';
-      item.ddclass = '';
-      item.label = '';
-      item.labelClass = '';
-      item.extralink = false;
-      if(item.submenu == null){
-          item.submenu = [];
-      } else {
-        let submenu = item.submenu;
-        for(let j=0; j < submenu.length; j++) {
-          let subitem = submenu[j];
-          subitem.class = '';
-          subitem.ddclass = '';
-          subitem.label = '';
-          subitem.labelClass = '';
-          subitem.extralink = false;
-          if(subitem.submenu == null) {
-              subitem.submenu = [];
-          }
-        }
-      }
-    }
+    });
 
     this.items = menuItems;
   }

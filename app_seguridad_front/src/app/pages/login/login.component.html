@@ -45,6 +45,9 @@
                 </div>
                 <input class="form-control" placeholder="Email" type="email" formControlName="username">
               </div>
+              <div *ngIf="formulario.controls['username'].invalid && formulario.controls['username'].touched">
+                <div *ngIf="formulario.controls['username'].errors.required" class="invalid-feedback">Por favor, ingrese su correo o nombre de usuario</div>
+              </div>
             </div>
             <div class="form-group">
               <div class="input-group input-group-alternative">
@@ -53,11 +56,14 @@
                 </div>
                 <input class="form-control" placeholder="Password" type="password" formControlName="password">
               </div>
+              <div *ngIf="formulario.controls['password'].invalid && formulario.controls['password'].touched">
+                <div *ngIf="formulario.controls['password'].errors.required" class="invalid-feedback">Por favor, ingrese su contraseña</div>
+              </div>
             </div>
-            <div class="custom-control custom-control-alternative custom-checkbox">
-              <input class="custom-control-input" id="customCheckLogin" type="checkbox" formControlName="rememberMe">
-              <label class="custom-control-label" for="customCheckLogin">
-                <span class="text-muted">Remember me</span>
+            <div class="form-group">
+              <label class="lmar-checkbox-container">Recuerdame
+                <input type="checkbox" formControlName="rememberMe">
+                <span class="checkmark"></span>
               </label>
             </div>
             <div class="text-center">
@@ -77,3 +83,5 @@
     </div>
   </div>
 </div>
+
+<p-toast position="top-right" [baseZIndex]="9000" autoZIndex="false"></p-toast>

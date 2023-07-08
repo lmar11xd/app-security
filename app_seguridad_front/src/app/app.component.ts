@@ -7,6 +7,6 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'App Security';
-  typeSelected: string = 'ball-spin-fade-rotating';
-  textoSpinner: string = 'Procesando...';
+  typeSelected: string = 'ball-atom';
+  textoSpinner: string = 'Cargando...';
 }

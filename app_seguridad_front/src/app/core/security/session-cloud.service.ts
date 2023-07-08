@@ -9,12 +9,12 @@ export class SessionCloudService {
 
   login(request) {
     const url = environment.apiBaseUrl + 'api/auth/login';
-    return this.http.post(url,request);
+    return this.http.post(url, request);
   }
 
   token(request) {
     const url = environment.apiBaseUrl + 'api/auth/token';
-    return this.http.post(url,request);
+    return this.http.post(url, request);
   }
 
 }
