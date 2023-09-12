@@ -3,13 +3,7 @@ import { Router } from '@angular/router';
 import { SidebarService } from './sidebar.service';
 import { SettingsService } from 'src/app/core/settings/settings.service';
 
-declare interface RouteInfo {
-    path: string;
-    title: string;
-    icon: string;
-    class: string;
-}
-export const ROUTES: RouteInfo[] = [
+export const ROUTES: MenuItem[] = [
     { path: '/dashboard', title: 'Dashboard',  icon: 'ni-tv-2 text-primary', class: '' },
     { path: '/icons', title: 'Icons',  icon:'ni-planet text-blue', class: '' },
     { path: '/maps', title: 'Maps',  icon:'ni-pin-3 text-orange', class: '' },
@@ -26,7 +20,7 @@ export const ROUTES: RouteInfo[] = [
 })
 export class SidebarComponent implements OnInit {
 
-  public menuItems: any[];
+  public menuItems: MenuItem[];
   public isCollapsed = true;
 
   constructor(

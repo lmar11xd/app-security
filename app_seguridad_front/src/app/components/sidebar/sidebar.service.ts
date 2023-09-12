@@ -9,14 +9,12 @@ export class SidebarService {
   public collapseSidebar: boolean = false;
   public fullScreen: boolean = false;
 
-  MENUITEMS: any[] = [];//ROUTES;
-
-  public items = [];//new BehaviorSubject<any[]>(this.MENUITEMS);
+  public items: MenuItem[] = [];
 
   constructor() {
   }
 
-  setMenuItems(menuItems: any[]) {
+  setMenuItems(menuItems: MenuItem[]) {
     if(menuItems == null) return;
     menuItems.forEach((item) => {
       item.title = item.title;
